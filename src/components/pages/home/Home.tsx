@@ -1,5 +1,5 @@
-import CategoryItem from '../category-item/CategoryItem';
-import './CategoryList.styles.scss';
+import React from 'react';
+import CategoryList from '../../base/category-list/CategoryList';
 
 interface Category {
   id: number;
@@ -7,7 +7,7 @@ interface Category {
   imageUrl: string;
 }
 
-const CategoryList = () => {
+const Home: React.FC = () => {
   const categories: Category[] = [
     {
       id: 1,
@@ -37,12 +37,10 @@ const CategoryList = () => {
   ];
 
   return (
-    <div className="categories-container">
-      {categories.map((category) => (
-        <CategoryItem category={category} key={category.id} />
-      ))}
+    <div className="home-container">
+      <CategoryList categories={categories} />
     </div>
   );
 };
 
-export default CategoryList;
+export default Home;
