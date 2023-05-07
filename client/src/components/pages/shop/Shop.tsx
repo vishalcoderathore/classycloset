@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Shop = () => {
   const [customers, setCustomers] = useState([]);
@@ -7,10 +7,10 @@ const Shop = () => {
   useEffect(() => {
     axios
       .get('http://localhost:5000/api/shop')
-      .then((res) => {
+      .then(res => {
         setCustomers(res.data);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }, []);

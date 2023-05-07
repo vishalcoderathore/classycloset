@@ -14,7 +14,7 @@ interface CategoryListProps {
 const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
   return (
     <div className="categories-container">
-      {categories.map((category) => (
+      {categories.map(category => (
         <CategoryItem category={category} key={category.id} />
       ))}
     </div>

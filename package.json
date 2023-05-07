@@ -8,7 +8,8 @@
     "client": "npm run dev --prefix client",
     "server": "npm run server --prefix server",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "lint": "concurrently \"npm run lint --prefix client\" \"npm run lint --prefix server\""
+    "lint": "concurrently \"npm run lint --prefix client\" \"npm run lint --prefix server\"",
+    "format": "concurrently \"npm run format --prefix client\" \"npm run format --prefix server\""
   },
   "repository": {
     "type": "git",

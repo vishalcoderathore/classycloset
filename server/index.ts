@@ -1,13 +1,15 @@
-const dotenv = require('dotenv');
-dotenv.config();
-import express, { Request, Response } from 'express';
-import cors from 'cors';
-import keys from './config/keys';
+import express, { Request, Response, NextFunction } from 'express';
 import authRoutes from './routes/authRoutes';
-const mongoose = require('mongoose');
-const passport = require('passport');
-const cookieSession = require('cookie-session');
+import cookieSession from 'cookie-session';
+import keys from './config/keys';
+import mongoose from 'mongoose';
+import passport from 'passport';
+import dotenv from 'dotenv';
+import cors from 'cors';
 require('./models/User');
+require('./services/passport');
+
+dotenv.config();
 
 /*
  * Connect to Mongoose Database
@@ -18,7 +20,6 @@ if (MONGODB_URI == null || MONGODB_URI.trim() === '') {
   console.error('MONGODB_URI is not defined in the environment variables');
   process.exit(1);
 }
-
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
@@ -45,8 +46,6 @@ mongoose.set('debug', true);
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-// Cookie Configuration
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -55,12 +54,32 @@ app.use(
 );
 
 /*
+ * This workaround allows the use of Passport v0.6.0 and therefore get rid of the security vulnerability CVE-2022-25896
+ * Register regenerate & save after the cookieSession middleware initialization
+ */
+app.use((request: Request, response: Response, next: NextFunction) => {
+  if (request.session && !request.session.regenerate) {
+    request.session.regenerate = (cb: () => void) => {
+      cb();
+    };
+  }
+  if (request.session && !request.session.save) {
+    request.session.save = (cb: () => void) => {
+      cb();
+    };
+  }
+  next();
+});
+
+/*
  * Initialize Passport
  */
 app.use(passport.initialize());
-// Passport use Cookies
 app.use(passport.session());
-// Include routing paths
+
+/*
+ * Include routing paths
+ */
 authRoutes(app);
 
 app.get('/api/shop', async (_: Request, res: Response) => {

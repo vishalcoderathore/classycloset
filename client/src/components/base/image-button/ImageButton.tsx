@@ -1,5 +1,5 @@
-import React from 'react';
 import './ImageButton.styles.scss';
+import React from 'react';
 
 interface ImageButtonProps {
   src: string;

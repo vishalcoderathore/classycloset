@@ -1,5 +1,5 @@
-import React from 'react';
 import CategoryList from '../../base/category-list/CategoryList';
+import React from 'react';
 
 interface Category {
   id: number;
