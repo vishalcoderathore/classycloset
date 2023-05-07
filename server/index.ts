@@ -6,6 +6,7 @@ import keys from './config/keys';
 import authRoutes from './routes/authRoutes';
 const mongoose = require('mongoose');
 const passport = require('passport');
+const cookieSession = require('cookie-session');
 require('./models/User');
 
 /*
@@ -45,10 +46,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Cookie Configuration
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey],
+  }),
+);
+
 /*
  * Initialize Passport
  */
 app.use(passport.initialize());
+// Passport use Cookies
+app.use(passport.session());
 // Include routing paths
 authRoutes(app);
 
