@@ -20,6 +20,7 @@ module.exports = {
     ecmaVersion: 2021,
     project: './tsconfig.json',
     sourceType: 'module',
+    tsconfigRootDir: __dirname,
   },
   plugins: ['@typescript-eslint', 'prettier', 'react', 'react-hooks'],
   rules: {
